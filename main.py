@@ -1413,3 +1413,28 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+from flask import Flask
+import threading
+import os
+
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return "SmartEarnBot is Alive! Bot is running on Telegram."
+
+@app.route('/health')
+def health():
+    return "OK", 200
+
+def run_flask():
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host='0.0.0.0', port=port)
+
+if __name__ == "__main__":
+    # Start web server in background so Render sees a port
+    flask_thread = threading.Thread(target=run_flask)
+    flask_thread.daemon = True
+    flask_thread.start()
+    # Start your Telegram bot
+    main()
