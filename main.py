@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import os
 from flask import Flask
 from threading import Thread
@@ -13,7 +15,6 @@ def run_web():
     app.run(host='0.0.0.0', port=port)
 
 Thread(target=run_web, daemon=True).start()
-from __future__ import annotations
 """SmartEarnBot- a small Telegram earning and referral bot.
 
 Install the dependency with:
