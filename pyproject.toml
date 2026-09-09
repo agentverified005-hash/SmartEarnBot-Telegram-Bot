@@ -2,9 +2,12 @@
 name = "repl-nix-workspace"
 version = "0.1.0"
 description = "Add your description here"
-requires-python = ">=3.13"
+requires-python = ">=3.11"
 dependencies = [
-    "python-telegram-bot==22.8",
-    "flask",
+            "python-telegram-bot==20.7",
+    "Flask==2.3.3",
+    "psycopg2-binary==2.9.9",
+   
+    
 
 ]
