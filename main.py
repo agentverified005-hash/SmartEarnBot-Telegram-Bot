@@ -83,19 +83,23 @@ def initialize_database() -> None:
 def ensure_user(user: Any, referrer_id: int | None = None) -> None:
     now = int(time.time()); user_id = int(user.id)
     with DB_LOCK:
-        DB.execute("INSERT INTO users (user_id, username, first_name, created_at, last_seen_at) VALUES (?,?,?,?,?) ON CONFLICT(user_id) DO UPDATE SET username=excluded.username, first_name=excluded.first_name, last_seen_at=excluded.last_seen_at", (user_id, user.username or "", user.first_name or "", now, now))
+        DB.execute("INSERT INTO users (user_id, username, first_seen) VALUES (?, ?, ?) ON CONFLICT(user_id) DO NOTHING", (user_id, user.username, now))
         DB.execute("INSERT OR IGNORE INTO balances (user_id, amount) VALUES (?, 0)", (user_id,))
-        if referrer_id and referrer_id!= user_id:
-            referrer_exists = DB.execute("SELECT 1 FROM users WHERE user_id =?", (referrer_id,)).fetchone()
-            current_referrer = DB.execute("SELECT referred_by FROM users WHERE user_id =?", (user_id,)).fetchone()
+        if referrer_id and referrer_id != user_id:
+            referrer_exists = DB.execute("SELECT 1 FROM users WHERE user_id = ?", (referrer_id,)).fetchone()
+            current_referrer = DB.execute("SELECT referred_by FROM users WHERE user_id = ?", (user_id,)).fetchone()
             if referrer_exists and current_referrer and current_referrer["referred_by"] is None:
-                DB.execute("UPDATE users SET referred_by =? WHERE user_id =?", (referrer_id, user_id))
-                DB.execute("INSERT OR IGNORE INTO referrals (referrer_id, referred_id, created_at) VALUES (?,?,?)", (referrer_id, user_id, now))
+                DB.execute("UPDATE users SET referred_by = ? WHERE user_id = ?", (referrer_id, user_id))
+                DB.execute("INSERT OR IGNORE INTO referrals (referrer_id, referred_id) VALUES (?, ?)", (referrer_id, user_id))
         DB.commit()
 
 def get_balance(user_id: int) -> int:
-    with DB_LOCK: row = DB.execute("SELECT amount FROM balances WHERE user_id =?", (user_id,)).fetchone()
+    with DB_LOCK:
+        row = DB.execute("SELECT amount FROM balances WHERE user_id = ?", (user_id,)).fetchone()
     return int(row["amount"]) if row else 0
 
-def change_balance(user_id: int, amount: int) -> int | None:
+def change_balance(user_id: int, amount: int) -> None:
     with DB_LOCK:
+        DB.execute("INSERT OR IGNORE INTO balances (user_id, amount) VALUES (?, 0)", (user_id,))
+        DB.execute("UPDATE balances SET amount = amount + ? WHERE user_id = ?", (amount, user_id))
+        DB.commit()
