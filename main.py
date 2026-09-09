@@ -1,4 +1,4 @@
- from __future__ import annotations
+from __future__ import annotations
 """SmartEarnBot- a small Telegram earning and referral bot.
 
 Install the dependency with:
