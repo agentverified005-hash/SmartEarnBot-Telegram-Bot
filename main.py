@@ -1,4 +1,4 @@
-from __future__ import annotations
+ from __future__ import annotations
 """SmartEarnBot- a small Telegram earning and referral bot.
 
 Install the dependency with:
@@ -26,14 +26,6 @@ No token or other credential is hard-coded in this file.
 from flask import Flask
 import threading
 import os
-app = Flask(__name__)
-@app.route('/')
-def home():
-    return "SmartEarnBot is Alive!"
-def run_flask():
-    port = int(os.environ.get("PORT", 10000))
-    app.run(host="0.0.0.0", port=port)
-threading.Thread(target=run_flask, daemon=True).start()
 
 
 
@@ -61,7 +53,7 @@ from telegram.ext import (
 # Configuration
 # ---------------------------------------------------------------------------
 
-BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "").strip()
+BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN") or os.getenv("BOT_TOKEN") or os.getenv("TELEGRAM_TOKEN") or ""
 DATABASE_PATH = os.getenv("DATABASE_PATH", "smartearnbot.db").strip()
 
 # REQUIRED_CHANNELS / REQUIRED_CHANNEL_URLS are comma-separated. The older
