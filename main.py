@@ -1,3 +1,4 @@
+from __future__ import annotations
 """SmartEarnBot - a small Telegram earning and referral bot.
 
 Install the dependency with:
@@ -34,12 +35,12 @@ def run_flask():
     app.run(host="0.0.0.0", port=port)
 threading.Thread(target=run_flask, daemon=True).start()
 
-from __future__ import annotations
+
 
 import logging
-import os
+
 import sqlite3
-import threading
+
 import time
 from typing import Any
 
@@ -85,12 +86,12 @@ if not REQUIRED_CHANNEL_URLS:
     if legacy_channel_url:
         REQUIRED_CHANNEL_URLS = [legacy_channel_url]
 
-MINING_REWARD = max(1, int(os.getenv("MINING_REWARD", "10")))
+MINING_REWARD = max(1, int(os.getenv("MINING_REWARD", "500")))
 MINING_COOLDOWN_SECONDS = max(
     60, int(os.getenv("MINING_COOLDOWN_SECONDS", "3600"))
 )
 MINIMUM_WITHDRAWAL = max(
-    1, int(os.getenv("MINIMUM_WITHDRAWAL", "100"))
+    1, int(os.getenv("MINIMUM_WITHDRAWAL", "5000"))
 )
 
 ADMIN_IDS: set[int] = set()
