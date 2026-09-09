@@ -14,13 +14,25 @@ Optional environment variables:
     REQUIRED_CHANNEL_URLS=https://t.me/channel_one,https://t.me/channel_two,https://t.me/channel_three
     ADMIN_IDS=123456789,987654321
     DATABASE_PATH=smartearnbot.db
-    MINING_REWARD=10
+    MINING_REWARD=500
     MINING_COOLDOWN_SECONDS=3600
-    MINIMUM_WITHDRAWAL=100
+    MINIMUM_WITHDRAWAL=5000
 
 The bot uses Telegram long polling and stores all application data in SQLite.
 No token or other credential is hard-coded in this file.
 """
+
+from flask import Flask
+import threading
+import os
+app = Flask(__name__)
+@app.route('/')
+def home():
+    return "SmartEarnBot is Alive!"
+def run_flask():
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)
+threading.Thread(target=run_flask, daemon=True).start()
 
 from __future__ import annotations
 

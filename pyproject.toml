@@ -5,4 +5,6 @@ description = "Add your description here"
 requires-python = ">=3.13"
 dependencies = [
     "python-telegram-bot==22.8",
+    "flask",
+
 ]
