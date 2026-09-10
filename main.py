@@ -1,11 +1,12 @@
 import logging
+import os
 import sqlite3
 from telegram import Update, ReplyKeyboardMarkup
-from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, ContextTypes, filters
+from telegram.ext import ApplicationBuilder
 
 # --- CONFIG ---
-TOKEN = "PUT_YOUR_BOT_TOKEN_HERE"
-ADMIN_ID = 7077093393 # Your ID - Paschal
+TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
+ADMIN_ID = 7077093393  # Your ID - Paschal
 
 CHANNELS = [
     "@verifiedearners11",
