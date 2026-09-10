@@ -21,10 +21,9 @@ threading.Thread(target=run_web, daemon=True).start()
 # --- SETTINGS ---
 TOKEN = os.getenv("BOT_TOKEN")
 MIN_WITHDRAWAL = 50000
-REF_BONUS = 1000
-TASK_BONUS_PER_CHANNEL = 200
+REF_BONUS = 2000
+TASK_BONUS_PER_CHANNEL = 750
 ADMIN_ID = 123456789
-
 # --- YOUR 7 CHANNELS FINAL ---
 CHANNELS = [
     {"username": "@verifiedearners11", "url": "https://t.me/verifiedearners11", "name": "Verified Earners"},
@@ -54,8 +53,8 @@ def get_user(uid):
     return r[0], r[1], r[2]
 
 main_keyboard = ReplyKeyboardMarkup([
-    ["💰 Balance", "📝 Tasks"],
-    ["👥 Referrals", "🏦 Withdraw"]
+    ["🔴 Balance", "🟢 Tasks"],
+    ["🟣 Referrals", "🟠 Withdraw"]
 ], resize_keyboard=True)
 
 async def check_joined(uid, context):
